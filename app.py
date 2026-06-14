@@ -1,5 +1,3 @@
-import nltk
-
 def setup_nltk():
     try:
         nltk.data.find('tokenizers/punkt')
@@ -12,12 +10,9 @@ def setup_nltk():
         nltk.download('punkt_tab')
 
     try:
-        nltk.data.find('taggers/averaged_perceptron_tagger')
+        nltk.data.find('taggers/averaged_perceptron_tagger_eng')
     except LookupError:
-        nltk.download('averaged_perceptron_tagger')
-
-setup_nltk()
-
+        nltk.download('averaged_perceptron_tagger_eng')
 
 import streamlit as st
 import nltk
