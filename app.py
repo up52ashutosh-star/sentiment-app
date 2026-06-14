@@ -3,7 +3,10 @@ from transformers import pipeline
 
 @st.cache_resource
 def load_model():
-    return pipeline("sentiment-analysis")
+    return pipeline(
+        "sentiment-analysis",
+        model="distilbert-base-uncased-finetuned-sst-2-english"
+    )
 
 sent_pipeline = load_model()
 
