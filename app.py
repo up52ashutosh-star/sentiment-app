@@ -33,29 +33,44 @@ def extract_aspects(tokens, tags):
     return aspects
 
 def analyze_text(text):
-    sentences = sent_tokenize(text)
-    result_blocks = []
+    sentences = [s.strip() for s in text.split(".") if s.strip()]
+
+    output = ""
 
     for sent in sentences:
         tokens = word_tokenize(sent)
         tags = pos_tag(tokens)
 
-        aspects = extract_aspects(tokens, [t[1] for t in tags])
+        aspects = [w for w, t in zip(tokens, [t[1] for t in tags]) if t.startswith("NN")]
 
-        score = analyzer.polarity_scores(sent)
-        compound = score["compound"]
+        score = analyzer.polarity_scores(sent)["compound"]
 
-        if compound >= 0.05:
-            label = "POSITIVE"
-            emoji = "😊"
-        elif compound <= -0.05:
-            label = "NEGATIVE"
-            emoji = "😞"
+        if score >= 0.05:
+            label = "POSITIVE 😊"
+        elif score <= -0.05:
+            label = "NEGATIVE 😞"
         else:
-            label = "NEUTRAL"
-            emoji = "😐"
+            label = "NEUTRAL 😐"
 
-        block = f"""
+        output += f"""
+----------------------------------------
+Review Part:
+{sent}
+
+POS Tags:
+{tags}
+
+Aspects:
+{aspects}
+
+Sentiment:
+{label}
+
+Score:
+{score:.4f}
+"""
+
+    return output
 ----------------------------------------
 Review Part:
 {sent}
